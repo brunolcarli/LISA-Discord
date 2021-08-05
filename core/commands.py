@@ -22,3 +22,13 @@ async def version(ctx):
     Service version: {service_version}
     '''
     return await ctx.send(response)
+
+@bot.command()
+async def sentiment_extraction(ctx, *text):
+    """
+    Versão do bot
+    """
+    text=" ".join(i for i in text)
+    sentiment = GraphQLQuery.lisa_sentiment_extraction(text)
+
+    return await ctx.send(sentiment)
