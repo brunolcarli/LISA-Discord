@@ -3,15 +3,22 @@ from discord.ext import commands
 from lisa.settings import BACKEND_URL, __version__
 from core.connections import GraphQLQuery
 
-bot = commands.Bot(command_prefix='l>')
 
 
-@bot.event
+intents = discord.Intents.default()
+intents.messages = True
+intents.guilds = True
+intents.members = True
+
+client = commands.Bot(command_prefix='l:', intents=intents)
+
+
+@client.event
 async def on_ready():
     print('Runnin smooth!')
 
 
-@bot.command(aliases=['v'])
+@client.slash_command(name='version', description='Return bot current version')
 async def version(ctx):
     """
     Bot version
@@ -21,9 +28,9 @@ async def version(ctx):
     Bot version: {__version__}
     Service version: {service_version}
     '''
-    return await ctx.send(response)
+    await ctx.respond(response, ephemeral=True)
 
-@bot.command()
+@client.command()
 async def sentiment_extraction(ctx, *text):
     """
     Versão do bot

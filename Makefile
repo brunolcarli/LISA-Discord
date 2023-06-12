@@ -3,4 +3,8 @@ run:
 	python3 main.py
 
 install:
-	pip install -r lisa/requirements/development.txt
+	pip install -r requirements.txt
+
+pipe:
+	make install
+	make run

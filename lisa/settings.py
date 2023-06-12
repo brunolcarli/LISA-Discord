@@ -1,9 +1,10 @@
 """
 Bot settings module.
 """
-from decouple import config
+import os
 
-__version__ = '0.0.0'
+__version__ = '0.0.1'
 
-TOKEN = config('TOKEN', '')
-BACKEND_URL = config('BACKEND_URL')
+TOKEN = os.environ.get('TOKEN', '')
+BACKEND_URL = os.environ.get('BACKEND_URL')
+ENV_REF = os.environ.get('ENV_REF', 'development')

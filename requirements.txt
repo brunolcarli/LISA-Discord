@@ -1,0 +1,9 @@
+discord==2.2.3
+discord-interactions==0.4.0
+discord-py-slash-command
+discord.py==2.2.3
+requests==2.22.0
+flask==2.0.1
+py-cord
+Jinja2==3.0.3
+itsdangerous==2.0.1
