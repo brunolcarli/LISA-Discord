@@ -28,14 +28,33 @@ async def version(ctx):
     Bot version: {__version__}
     Service version: {service_version}
     '''
-    await ctx.respond(response, ephemeral=True)
+    await ctx.respond(response, ephemeral=False)
 
-@client.command()
-async def sentiment_extraction(ctx, *text):
+
+@client.slash_command(name='sentiment', description='Return text sentiment')
+async def sentiment_extraction(ctx, text):
     """
-    Versão do bot
+    Return text polarity
     """
-    text=" ".join(i for i in text)
     sentiment = GraphQLQuery.lisa_sentiment_extraction(text)
 
-    return await ctx.send(sentiment)
+    await ctx.respond(sentiment, ephemeral=False)
+
+
+@client.slash_command(name='text_offense', description='Return text offense level')
+async def text_offense(ctx, text):
+    """
+    Return text offense level
+    """
+    embed = discord.Embed(color=0x1E1E1E, type='rich')
+    data = GraphQLQuery.text_offense_level(text)
+
+    if 'ERROR' in data:
+        return await ctx.respond(data, ephemeral=False)
+
+
+    embed.add_field(name='Text:', value=text, inline=False)
+    embed.add_field(name='Average:', value=data.get('average'), inline=True)
+    embed.add_field(name='Is offensive:', value=data.get('isOffensive'), inline=True)
+
+    await ctx.respond('', embed=embed, ephemeral=False)

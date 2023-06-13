@@ -29,8 +29,26 @@ class GraphQLQuery:
         '''
         request = requests.post(BACKEND_URL, json={'query': payload})
         
-        err_msg = 'Unable to communicate with the service!'
+        err_msg = 'ERROR: Unable to communicate with the service!'
         response_data = request.json().get('data')
         response_message = response_data.get('sentimentExtraction', err_msg)
+        
+        return response_message
+
+    @staticmethod
+    def text_offense_level(text):
+        payload = f'''
+        query {{
+            textOffenseLevel(text: "{text}") {{
+                text
+                average
+                isOffensive
+            }}
+        }}
+        '''
+        request = requests.post(BACKEND_URL, json={'query': payload})
+        err_msg = 'ERROR: Unable to communicate with the service!'
+        response_data = request.json().get('data')
+        response_message = response_data.get('textOffenseLevel', err_msg)
         
         return response_message
