@@ -58,3 +58,19 @@ async def text_offense(ctx, text):
     embed.add_field(name='Is offensive:', value=data.get('isOffensive'), inline=True)
 
     await ctx.respond('', embed=embed, ephemeral=False)
+
+
+@client.slash_command(name='similarty', description='Return similarity between two words separated by ,')
+async def similarity(ctx, text):
+    """
+    Return similarity between two words
+    """
+
+    if ',' not in text:
+        return await ctx.respond('Separate two words by `,`', ephemeral=False)
+
+    a, b, *_ = text.split(',')
+
+    data = GraphQLQuery.similarity(a, b)
+
+    await ctx.respond(data, ephemeral=False)

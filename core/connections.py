@@ -52,3 +52,17 @@ class GraphQLQuery:
         response_message = response_data.get('textOffenseLevel', err_msg)
         
         return response_message
+
+    @staticmethod
+    def similarity(a, b):
+        payload = f'''
+        query {{
+            similarity(firstToken: "{a}" secondToken: "{b}")
+        }}
+        '''
+        request = requests.post(BACKEND_URL, json={'query': payload})
+        err_msg = 'ERROR: Unable to communicate with the service!'
+        response_data = request.json().get('data')
+        response_message = response_data.get('similarity', err_msg)
+        
+        return response_message
