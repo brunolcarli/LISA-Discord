@@ -93,3 +93,24 @@ async def pos_tag(ctx, text):
         embed.add_field(name=i.get('token'), value=i.get('description'), inline=True)
 
     await ctx.respond('', embed=embed, ephemeral=False)
+
+
+@client.slash_command(name='dependency', description='Return the dependency parse of the text')
+async def dependency(ctx, text):
+    """
+    Return dependency parse of the text
+    """
+    embed = discord.Embed(color=0x1E1E1E, type='rich')
+    data = GraphQLQuery.dependency_parse(text)
+
+    if 'ERROR' in data:
+        return await ctx.respond(data, ephemeral=False)
+
+    embed.add_field(name='Text:', value=text, inline=False)
+    for i in data:
+        children = ' - '.join(i.get('children')).strip()
+        ancestors = ' - '.join(i.get('ancestors')).strip()
+        value = f'Children: {children}\nAncestors: {ancestors}'
+        embed.add_field(name=i.get('element'), value=value, inline=False)
+
+    await ctx.respond('', embed=embed, ephemeral=False)

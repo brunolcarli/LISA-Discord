@@ -83,3 +83,21 @@ class GraphQLQuery:
         response_message = response_data.get('partOfSpeech', err_msg)
         
         return response_message
+
+    @staticmethod
+    def dependency_parse(text):
+        payload = f'''
+        query {{
+            dependencyParse(text: "{text}") {{
+                element
+                children
+                ancestors
+            }}
+        }}
+        '''
+        request = requests.post(BACKEND_URL, json={'query': payload})
+        err_msg = 'ERROR: Unable to communicate with the service!'
+        response_data = request.json().get('data')
+        response_message = response_data.get('dependencyParse', err_msg)
+        
+        return response_message
