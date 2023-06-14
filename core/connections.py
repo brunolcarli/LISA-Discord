@@ -66,3 +66,20 @@ class GraphQLQuery:
         response_message = response_data.get('similarity', err_msg)
         
         return response_message
+
+    @staticmethod
+    def part_of_speech(text):
+        payload = f'''
+        query {{
+            partOfSpeech(text: "{text}") {{
+                token
+                description
+            }}
+        }}
+        '''
+        request = requests.post(BACKEND_URL, json={'query': payload})
+        err_msg = 'ERROR: Unable to communicate with the service!'
+        response_data = request.json().get('data')
+        response_message = response_data.get('partOfSpeech', err_msg)
+        
+        return response_message

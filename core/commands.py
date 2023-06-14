@@ -74,3 +74,22 @@ async def similarity(ctx, text):
     data = GraphQLQuery.similarity(a, b)
 
     await ctx.respond(data, ephemeral=False)
+
+
+@client.slash_command(name='pos_tag', description='Return the Part of Speech Tags')
+async def pos_tag(ctx, text):
+    """
+    Return part of speech tags
+    """
+    embed = discord.Embed(color=0x1E1E1E, type='rich')
+    data = GraphQLQuery.part_of_speech(text)
+
+    if 'ERROR' in data:
+        return await ctx.respond(data, ephemeral=False)
+
+
+    embed.add_field(name='Text:', value=text, inline=False)
+    for i in data:
+        embed.add_field(name=i.get('token'), value=i.get('description'), inline=True)
+
+    await ctx.respond('', embed=embed, ephemeral=False)
